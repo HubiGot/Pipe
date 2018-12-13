@@ -19,12 +19,13 @@ if(id==0) // kod dziecka
   {
     printf("Jestem dzieckiem - wykonuje kod dziecka \n");
     close(fd[1]);
-
+    close(0); // zwalniamy 0
+    dup(fd[0]); // duplikujemy fd[0], ktore jest teraz zerem
     while ((licz=read(fd[0], odbior, BUFSIZ)) > 0)
     {
-    write(1, odbior, licz);
+
     }
-    printf("Czytanie zakonczylo sie :) \n");
+    execlp("display","",NULL);
 
 
   }
@@ -34,7 +35,7 @@ else if(id >0) // kod rodzica
     close(fd[0]);
     printf("Podaj nazwe pliku do otwarcia\n");
     scanf("%s", nazwa_pliku);
-    plik_wej=fopen(nazwa_pliku,"r");
+    plik_wej=fopen(nazwa_pliku,"r+b");
     if(plik_wej==NULL)
       {
         printf("Nie podano wlasciewgo uchwytu do pliku \n");
@@ -44,9 +45,12 @@ else if(id >0) // kod rodzica
       {
         while(!feof(plik_wej))
         {
+
           bufor[0]=getc(plik_wej);
           write(fd[1],bufor,1);
         }
+        sleep(5);
+        close(fd[1]);
         fclose(plik_wej);
 
       }
