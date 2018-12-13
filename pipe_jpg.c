@@ -20,6 +20,7 @@ if(id==0) // kod dziecka
     close(0); // zwalniamy 0 bo display czyta z 0
     dup(fd[0]); // duplikujemy fd[0], ktore zajelo najmniejszy wolny numer - 0
     execlp("display","",NULL);
+
   }
 else if(id >0) // kod rodzica
   {
@@ -41,6 +42,12 @@ else if(id >0) // kod rodzica
           write(fd[1],bufor,1); // zapisujemy do potoku
         }
         fclose(plik_wej);
+        sleep(5);
+        if(!close(fd[1]))
+        {
+          printf("Zamkniecie fd[1] procesu nadrzednego \n");
+
+        }
       }
   }
 else
